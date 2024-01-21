@@ -1,10 +1,14 @@
 from models.delivery_fee_models import DeliveryFeeRequest
 
 
-def calculate_fee(request: DeliveryFeeRequest) -> int:
+def calculate_delivery_fee(request: DeliveryFeeRequest) -> int:
     """
     Calculates the delivery fee for a given request.
     """
-    calculated_fee = 0
+    fee = 0
 
-    return calculated_fee
+    # Small Order Surcharge
+    if request.cart_value < 1000:   # 10€ (in cents)
+        fee += 1000 - request.cart_value
+
+    return fee
