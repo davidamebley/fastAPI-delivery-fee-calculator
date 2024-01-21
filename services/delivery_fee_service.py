@@ -14,5 +14,8 @@ def calculate_delivery_fee(request: DeliveryFeeRequest) -> int:
     # Base Delivery Fee
     fee += 200  # 2€ (in cents)
 
-    
+    # Additional Distance Fee
+    if request.delivery_distance > 1000:
+        additional_distance = request.delivery_distance - 1000
+        fee += ((additional_distance + 499) // 500) * 100
     return fee
