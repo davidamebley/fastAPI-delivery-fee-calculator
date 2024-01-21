@@ -11,4 +11,8 @@ def calculate_delivery_fee(request: DeliveryFeeRequest) -> int:
     if request.cart_value < 1000:   # 10€ (in cents)
         fee += 1000 - request.cart_value
 
+    # Base Delivery Fee
+    fee += 200  # 2€ (in cents)
+
+    
     return fee
