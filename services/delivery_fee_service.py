@@ -33,4 +33,10 @@ def calculate_delivery_fee(request: DeliveryFeeRequest) -> int:
 
     # Ensure Maximum Fee Cap
     fee = min(fee, 1500)    # 15€ (in cents)
+
+    # Rush Hour Fee
+    order_time = request.time
+    if order_time.weekday() == 4 and 15 <= order_time.hour < 19:    # Fridays, 3pm to 7pm
+        fee = int(min(fee * 1.2, 1500))    # total fee times 1.2, but limit to 15€ max
+    
     return fee
