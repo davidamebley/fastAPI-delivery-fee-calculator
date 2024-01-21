@@ -25,10 +25,12 @@ def calculate_delivery_fee(request: DeliveryFeeRequest) -> int:
         extra_items = request.number_of_items - 4
         fee += extra_items * 50 # 50 cents per extra item
         if request.number_of_items > 12:
-            fee += 120 # Bulk fee of 1.20€ applied to orders over 12 items
+            fee += 120 # Bulk fee of 1.20€
 
     # Free Delivery for Cart Values 200€ or more
-    if request.cart_value >= 20000:
+    if request.cart_value >= 20000: # 200€ (in cents)
         return 0
 
+    # Ensure Maximum Fee Cap
+    fee = min(fee, 1500)    # 15€ (in cents)
     return fee
