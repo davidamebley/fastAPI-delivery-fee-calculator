@@ -1,3 +1,4 @@
+import re
 from models.delivery_fee_models import DeliveryFeeRequest
 
 
@@ -18,4 +19,12 @@ def calculate_delivery_fee(request: DeliveryFeeRequest) -> int:
     if request.delivery_distance > 1000:
         additional_distance = request.delivery_distance - 1000
         fee += ((additional_distance + 499) // 500) * 100
+    
+    # Item Count Surcharge
+    if request.number_of_items >= 5:
+        extra_items = request.number_of_items - 4
+        fee += extra_items * 50 # 50 cents per extra item
+        if request.number_of_items > 12:
+            fee += 120 # Bulk fee of 1.20€ applied to orders over 12 items
+
     return fee
