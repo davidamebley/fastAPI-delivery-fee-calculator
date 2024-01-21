@@ -27,4 +27,8 @@ def calculate_delivery_fee(request: DeliveryFeeRequest) -> int:
         if request.number_of_items > 12:
             fee += 120 # Bulk fee of 1.20€ applied to orders over 12 items
 
+    # Free Delivery for Cart Values 200€ or more
+    if request.cart_value >= 20000:
+        return 0
+
     return fee
