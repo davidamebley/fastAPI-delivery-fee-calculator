@@ -17,9 +17,9 @@ async def calculate_delivery_fee_api(request: DeliveryFeeRequest) -> DeliveryFee
         raise HTTPException(
             status_code=400, detail="Delivery distance cannot be negative."
         )
-    if request.number_of_items < 0:
+    if request.number_of_items <= 0:    # Ensuring there's a least one item
         raise HTTPException(
-            status_code=400, detail="Number of items cannot be negative."
+            status_code=400, detail="Number of items must be greater than zero."
         )
     
 
