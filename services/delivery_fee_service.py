@@ -1,3 +1,5 @@
+from datetime import datetime
+import re
 from models.delivery_fee_models import DeliveryFeeRequest
 
 # Constants
@@ -47,7 +49,15 @@ def calculate_item_count_surcharge(number_of_items: int) -> int:
             item_surchage += BULK_FEE_CENTS # Apply bulk fee
             return item_surchage
     return 0
-    
+
+def apply_rush_hour_multiplier(fee: int, order_time: datetime) -> int:
+    """
+    Applies the rush hour fee multiplier to cart value
+    """
+    if order_time.weekday() == RUSH_HOUR_DAY and RUSH_HOUR_START <= order_time.hour <= RUSH_HOUR_END:
+        return int(min(fee * RUSH_HOUR_MULTIPLIER, MAX_FEE_CENTS))
+    return fee
+
 
 def calculate_delivery_fee(request: DeliveryFeeRequest) -> int:
     """
