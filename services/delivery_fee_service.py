@@ -18,6 +18,14 @@ RUSH_HOUR_START = 15    # Start hour (24-hour format) for rush hour fee calculat
 RUSH_HOUR_END = 19  # End hour (24-hour format) for rush hour fee calculation.
 FREE_DELIVERY_CART_VALUE_CENTS = 20000  # Cart value in cents from which delivery is free.
 
+# Helper functions for fee calculation.
+def apply_small_order_surcharge(cart_value: int) -> int:
+    """
+    Applies a small order surcharge to a given cart value.
+    """
+    if cart_value < BASE_CART_VALUE_CENTS:
+        return BASE_CART_VALUE_CENTS - cart_value
+    return 0
 
 def calculate_delivery_fee(request: DeliveryFeeRequest) -> int:
     """
