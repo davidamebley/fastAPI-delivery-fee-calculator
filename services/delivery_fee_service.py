@@ -1,5 +1,4 @@
 from datetime import datetime
-import re
 from models.delivery_fee_models import DeliveryFeeRequest
 
 # Constants
