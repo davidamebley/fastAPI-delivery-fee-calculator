@@ -29,7 +29,7 @@ def apply_small_order_surcharge(cart_value: int) -> int:
         return BASE_CART_VALUE_CENTS - cart_value
     return 0
 
-def additional_distance_fee(distance: int) -> int:
+def calculate_additional_distance_fee(distance: int) -> int:
     """
     Calculates the additional distance fee for a given distance.
     """
@@ -58,42 +58,34 @@ def apply_rush_hour_multiplier(fee: int, order_time: datetime) -> int:
         return int(min(fee * RUSH_HOUR_MULTIPLIER, MAX_FEE_CENTS))
     return fee
 
-
+# Main function for fee calculation.
 def calculate_delivery_fee(request: DeliveryFeeRequest) -> int:
     """
     Calculates the delivery fee for a given request.
     """
     fee = 0
 
-    # Small Order Surcharge
-    if request.cart_value < 1000:   # 10€ (in cents)
-        fee += 1000 - request.cart_value
+    # Apply small order surcharge
+    fee += apply_small_order_surcharge(request.cart_value)
 
-    # Base Delivery Fee
-    fee += 200  # 2€ (in cents)
+    # Add base delivery fee
+    fee += BASE_DELIVERY_FEE_CENTS
 
-    # Additional Distance Fee
-    if request.delivery_distance > 1000:
-        additional_distance = request.delivery_distance - 1000
-        fee += ((additional_distance + 499) // 500) * 100
-    
-    # Item Count Surcharge
-    if request.number_of_items > 4:
-        extra_items = request.number_of_items - 4
-        fee += extra_items * 50 # 50 cents per extra item
-        if request.number_of_items > 12:
-            fee += 120 # Bulk fee of 1.20€
+    # Add additional distance fee
+    fee += calculate_additional_distance_fee(request.delivery_distance)
 
-    # Free Delivery for Cart Values 200€ or more
-    if request.cart_value >= 20000: # 200€ (in cents)
+    # Add item count surcharge
+    fee += calculate_item_count_surcharge(request.number_of_items)
+
+    # Check for free delivery
+    if request.cart_value >= FREE_DELIVERY_CART_VALUE_CENTS:
         return 0
-
-    # Ensure Maximum Fee Cap
-    fee = min(fee, 1500)    # 15€ (in cents)
-
-    # Rush Hour Fee
-    order_time = request.time
-    if order_time.weekday() == 4 and 15 <= order_time.hour <= 19:    # Rush hour period
-        fee = int(min(fee * 1.2, 1500))    # Total fee x multiplier, but limit to max fee
     
+    # Ensure Maximum fee cap
+    fee = min(fee, MAX_FEE_CENTS)
+
+    # Apply Rush hour multiplier
+    fee = apply_rush_hour_multiplier(fee, request.time)
+
+    # Calculated fee
     return fee
