@@ -36,7 +36,17 @@ def additional_distance_fee(distance: int) -> int:
         return ((additional_distance + ADDITIONAL_DISTANCE_ROUNDING) // ADDITIONAL_DISTANCE_INTERVAL_METERS) * ADDITIONAL_DISTANCE_FEE_CENTS
     return 0
 
-
+def calculate_item_count_surcharge(number_of_items: int) -> int:
+    """
+    Calculates the item count surcharge for a given number of items.
+    """
+    if number_of_items >= ITEMS_THRESHOLD_FOR_EXTRA_FEE:
+        extra_items = number_of_items - ITEMS_THRESHOLD_FOR_EXTRA_FEE
+        item_surchage = extra_items * ADDITIONAL_ITEM_COUNT_FEE_CENTS
+        if number_of_items > BULK_THRESHOLD:
+            item_surchage += BULK_FEE_CENTS # Apply bulk fee
+            return item_surchage
+    return 0
     
 
 def calculate_delivery_fee(request: DeliveryFeeRequest) -> int:
