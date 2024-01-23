@@ -27,6 +27,18 @@ def apply_small_order_surcharge(cart_value: int) -> int:
         return BASE_CART_VALUE_CENTS - cart_value
     return 0
 
+def additional_distance_fee(distance: int) -> int:
+    """
+    Calculates the additional distance fee for a given distance.
+    """
+    if distance > BASE_DISTANCE_METERS:
+        additional_distance = distance - BASE_DISTANCE_METERS
+        return ((additional_distance + ADDITIONAL_DISTANCE_ROUNDING) // ADDITIONAL_DISTANCE_INTERVAL_METERS) * ADDITIONAL_DISTANCE_FEE_CENTS
+    return 0
+
+
+    
+
 def calculate_delivery_fee(request: DeliveryFeeRequest) -> int:
     """
     Calculates the delivery fee for a given request.
