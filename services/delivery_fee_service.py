@@ -1,4 +1,4 @@
-from fee_calculations import *
+from .fee_calculations import *
 from constants import BASE_DELIVERY_FEE_CENTS, FREE_DELIVERY_CART_VALUE_CENTS, MAX_FEE_CENTS
 from models.delivery_fee_models import DeliveryFeeRequest
 
