@@ -1,3 +1,5 @@
+import dis
+from turtle import distance
 from services.fee_calculations import *
 
 from constants import *
@@ -20,3 +22,12 @@ def test_calculate_additional_distance_fee_within_base_distance():
     Test calculate_additional_distance_fee() with a distance within the base distance.
     """
     assert calculate_additional_distance_fee(BASE_DISTANCE_METERS) == 0
+
+def test_calculate_additional_distance_fee_above_base_distance():
+    """
+    Test calculate_additional_distance_fee() with a distance above the base distance.
+    """
+    # Additional distance which should incur a fee
+    additional_distance = 501
+    additional_fee = ((additional_distance + ADDITIONAL_DISTANCE_ROUNDING) // ADDITIONAL_DISTANCE_INTERVAL_METERS) * ADDITIONAL_DISTANCE_FEE_CENTS
+    assert calculate_additional_distance_fee(BASE_DISTANCE_METERS+additional_distance) == additional_fee
