@@ -14,3 +14,9 @@ def test_apply_small_order_surcharge_above_threshold():
     """
     assert apply_small_order_surcharge(1000) == 0
     assert apply_small_order_surcharge(1500) == 0
+
+def test_calculate_additional_distance_fee_within_base_distance():
+    """
+    Test calculate_additional_distance_fee() with a distance within the base distance.
+    """
+    assert calculate_additional_distance_fee(BASE_DISTANCE_METERS) == 0
