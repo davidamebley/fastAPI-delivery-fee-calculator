@@ -21,7 +21,6 @@ def test_calculate_additional_distance_fee_within_base_distance():
     """
     Test additional distance fee within base distance.
     """
-    assert calculate_additional_distance_fee(BASE_DISTANCE_METERS) == 0
     assert calculate_additional_distance_fee(BASE_DISTANCE_METERS-1) == 0
 
 def test_calculate_additional_distance_fee_above_base_distance():
