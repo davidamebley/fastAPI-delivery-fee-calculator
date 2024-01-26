@@ -31,3 +31,15 @@ def test_calculate_additional_distance_fee_above_base_distance():
     additional_distance = 501
     additional_fee = ((additional_distance + ADDITIONAL_DISTANCE_ROUNDING) // ADDITIONAL_DISTANCE_INTERVAL_METERS) * ADDITIONAL_DISTANCE_FEE_CENTS
     assert calculate_additional_distance_fee(BASE_DISTANCE_METERS+additional_distance) == additional_fee
+
+@pytest.mark.parametrize("additional_distance,expected_fee", [
+    (0, 0),     # Test case for no additional distance
+    (500, ADDITIONAL_DISTANCE_FEE_CENTS),
+    (501, 2 * ADDITIONAL_DISTANCE_FEE_CENTS), 
+    (1000, 2 * ADDITIONAL_DISTANCE_FEE_CENTS),
+    (1500, 3 * ADDITIONAL_DISTANCE_FEE_CENTS) 
+])
+def test_additional_distance_fee(additional_distance, expected_fee):
+    """Test additional distance fee for different distances."""
+    actual_fee = calculate_additional_distance_fee(BASE_DISTANCE_METERS + additional_distance)
+    assert actual_fee == expected_fee
