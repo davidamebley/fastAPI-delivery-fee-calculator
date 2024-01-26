@@ -37,3 +37,14 @@ def test_additional_distance_fee(additional_distance, expected_fee):
     """Test additional distance fee for different distances."""
     actual_fee = calculate_additional_distance_fee(BASE_DISTANCE_METERS + additional_distance)
     assert actual_fee == expected_fee
+
+@pytest.mark.parametrize("number_of_items, expected_fee", [
+    (ITEMS_THRESHOLD_FOR_EXTRA_FEE - 1, 0), # Below threshold
+    (ITEMS_THRESHOLD_FOR_EXTRA_FEE, ADDITIONAL_ITEM_COUNT_FEE_CENTS), # At threshold
+    (ITEMS_THRESHOLD_FOR_EXTRA_FEE + 1, 2 * ADDITIONAL_ITEM_COUNT_FEE_CENTS), # Just above threshold
+    (BULK_THRESHOLD, (BULK_THRESHOLD - (ITEMS_THRESHOLD_FOR_EXTRA_FEE - 1)) * ADDITIONAL_ITEM_COUNT_FEE_CENTS), # At the bulk threshold. No bulk fee expected
+    (BULK_THRESHOLD + 1, (BULK_THRESHOLD + 1 - (ITEMS_THRESHOLD_FOR_EXTRA_FEE - 1)) * ADDITIONAL_ITEM_COUNT_FEE_CENTS + BULK_FEE_CENTS),  # Above the bulk threshold
+])
+def test_item_count_surcharge(number_of_items, expected_fee):
+    """Test item count surcharge for various numbers of items."""""
+    assert calculate_item_count_surcharge(number_of_items) == expected_fee
