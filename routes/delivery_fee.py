@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+from datetime import timezone
 
 from models.delivery_fee_models import DeliveryFeeRequest, DeliveryFeeResponse
 from services.delivery_fee_service import calculate_delivery_fee
@@ -21,7 +22,11 @@ async def calculate_delivery_fee_api(request: DeliveryFeeRequest) -> DeliveryFee
         raise HTTPException(
             status_code=400, detail="Number of items must be greater than zero."
         )
-    
+    # Check if time is in UTC
+    if request.time.tzinfo != timezone.utc:
+        raise HTTPException(
+            status_code=400, detail="Order time must be in UTC."
+        )
 
     fee = calculate_delivery_fee(request)
     return DeliveryFeeResponse(delivery_fee=fee)
