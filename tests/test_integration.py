@@ -43,3 +43,17 @@ def test_additional_distance_fee():
     assert response.status_code == 200
     assert response.json() == {"delivery_fee": expected_fee}
     
+def test_item_count_at_threshold():
+    """
+    Test case for orders with items exactly at the item count threshold.
+    """
+    response = client.post(DELIVERY_FEE_ENDPOINT, json={
+        "cart_value": BASE_CART_VALUE_CENTS,
+        "delivery_distance": BASE_DISTANCE_METERS,
+        "number_of_items": ITEMS_THRESHOLD_FOR_EXTRA_FEE, # Exactly at threshold
+        "time": "2024-01-15T10:00:00Z"
+    })
+    # Additional fee for one item at threshold
+    expected_fee = BASE_DELIVERY_FEE_CENTS + ADDITIONAL_ITEM_COUNT_FEE_CENTS
+    assert response.status_code == 200
+    assert response.json() == {"delivery_fee": expected_fee}
