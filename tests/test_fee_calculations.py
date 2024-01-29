@@ -1,5 +1,5 @@
 import pytest
-from turtle import distance
+from datetime import datetime, timezone, timedelta
 from services.fee_calculations import *
 
 from constants import *
@@ -48,3 +48,27 @@ def test_additional_distance_fee(additional_distance, expected_fee):
 def test_item_count_surcharge(number_of_items, expected_fee):
     """Test item count surcharge for various numbers of items."""""
     assert calculate_item_count_surcharge(number_of_items) == expected_fee
+
+
+def create_test_time(weekday, hour):
+    """Helper function to create a test time object."""
+    # January 1, 2024, is a Monday (weekday 0)
+    base_date = datetime(2024, 1, 1, tzinfo=timezone.utc)
+    days_to_add = weekday - base_date.weekday()
+    return base_date + timedelta(days=days_to_add, hours=hour)
+
+# Calculate an initial fee below the max fee cap.
+rush_hour_fee = int(MAX_FEE_CENTS / RUSH_HOUR_MULTIPLIER) -1
+
+@pytest.mark.parametrize("weekday, hour, initial_fee, expected_fee", [
+    (RUSH_HOUR_DAY, RUSH_HOUR_START - 1, MAX_FEE_CENTS, MAX_FEE_CENTS), # Just before rush hour
+    (RUSH_HOUR_DAY, RUSH_HOUR_START, rush_hour_fee, int(rush_hour_fee * RUSH_HOUR_MULTIPLIER)), # At rush hour
+    (RUSH_HOUR_DAY, RUSH_HOUR_START + 1, rush_hour_fee, int(rush_hour_fee * RUSH_HOUR_MULTIPLIER)), # During rush hour
+    (RUSH_HOUR_DAY, RUSH_HOUR_END, rush_hour_fee, int(rush_hour_fee * RUSH_HOUR_MULTIPLIER)), # End of rush hour
+    (RUSH_HOUR_DAY, RUSH_HOUR_END + 1, MAX_FEE_CENTS, MAX_FEE_CENTS), # Just after rush hour
+    (RUSH_HOUR_DAY - 1, RUSH_HOUR_START + 1, MAX_FEE_CENTS, MAX_FEE_CENTS), # Different day
+])
+def test_apply_rush_hour_multiplier(weekday, hour, initial_fee, expected_fee):
+    """Test rush hour multiplier at various times."""
+    order_time = create_test_time(weekday, hour)
+    assert apply_rush_hour_multiplier(initial_fee, order_time) == expected_fee
