@@ -1,3 +1,4 @@
+
 from fastapi.testclient import TestClient
 
 from constants import *
@@ -87,5 +88,20 @@ def test_rush_hour_multiplier():
     base_fee = BASE_DELIVERY_FEE_CENTS + ADDITIONAL_DISTANCE_FEE_CENTS
     # Fee with rush hour multiplier, capped at maximum fee
     expected_fee = int(min(base_fee * RUSH_HOUR_MULTIPLIER, MAX_FEE_CENTS))
+    assert response.status_code == 200
+    assert response.json() == {"delivery_fee": expected_fee}
+
+def test_free_delivery():
+    """
+    Test case for orders with cart value reaching the free delivery threshold
+    """
+    response = client.post(DELIVERY_FEE_ENDPOINT, json={
+        "cart_value": FREE_DELIVERY_CART_VALUE_CENTS, # Free delivery threshold
+        "delivery_distance": BASE_DISTANCE_METERS * 2,
+        "number_of_items": ITEMS_THRESHOLD_FOR_EXTRA_FEE,
+        "time": "2024-01-15T10:00:00Z"
+    })
+    # No delivery fee for high cart value
+    expected_fee = 0
     assert response.status_code == 200
     assert response.json() == {"delivery_fee": expected_fee}
