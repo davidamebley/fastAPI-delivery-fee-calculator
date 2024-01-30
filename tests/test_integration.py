@@ -116,7 +116,7 @@ def test_negative_cart_value():
     })
     # Negative cart value is not allowed
     assert response.status_code == 400
-    assert response.json() == {"detail": "Cart value cannot be negative."}
+    assert response.json() == {"detail": "Cart value cannot be negative. Received cart value: {}".format(-1)}
 
 def test_negative_delivery_distance():
     """
@@ -130,7 +130,7 @@ def test_negative_delivery_distance():
     })
     # Negative delivery distance is not allowed
     assert response.status_code == 400
-    assert response.json() == {"detail": "Delivery distance cannot be negative."}
+    assert response.json() == {"detail": "Delivery distance cannot be negative. Received delivery distance: {}".format(-1)}
 
 def test_zero_number_of_items():
     """
@@ -144,7 +144,7 @@ def test_zero_number_of_items():
     })
     # Zero number of items is not allowed
     assert response.status_code == 400
-    assert response.json() == {"detail": "Number of items must be greater than zero."}
+    assert response.json() == {"detail": "Number of items must be greater than zero. Received number of items: {}".format(0)}
 
 def test_non_utc_time():
     """
@@ -158,4 +158,4 @@ def test_non_utc_time():
     })
     # Non-UTC time is not allowed
     assert response.status_code == 400
-    assert response.json() == {"detail": "Order time must be in UTC."}
+    assert response.json() == {"detail": f"Order time must be in UTC. Received time: 2024-01-15 10:00:00+01:00"}
