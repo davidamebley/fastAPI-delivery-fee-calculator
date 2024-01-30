@@ -1,4 +1,3 @@
-
 from fastapi.testclient import TestClient
 
 from constants import *
@@ -6,7 +5,6 @@ from main import app
 
 # Define a constant for the API endpoint
 DELIVERY_FEE_ENDPOINT = "/calculate-delivery-fee"
-
 
 client = TestClient(app)
 
