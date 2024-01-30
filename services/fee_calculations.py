@@ -27,7 +27,7 @@ def calculate_item_count_surcharge(number_of_items: int) -> int:
         extra_items = number_of_items - (ITEMS_THRESHOLD_FOR_EXTRA_FEE - 1) # Subtract 1 to account for the base fee
         item_surchage = extra_items * ADDITIONAL_ITEM_COUNT_FEE_CENTS
         if number_of_items > BULK_THRESHOLD:
-            item_surchage += BULK_FEE_CENTS # Apply bulk fee
+            return item_surchage + BULK_FEE_CENTS # Apply bulk fee
         return item_surchage
     return 0
 
