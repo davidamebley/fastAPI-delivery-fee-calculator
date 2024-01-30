@@ -103,3 +103,17 @@ def test_free_delivery():
     expected_fee = 0
     assert response.status_code == 200
     assert response.json() == {"delivery_fee": expected_fee}
+
+def test_negative_cart_value():
+    """
+    Test case for orders with negative cart value
+    """
+    response = client.post(DELIVERY_FEE_ENDPOINT, json={
+        "cart_value": -1, # Negative cart value
+        "delivery_distance": BASE_DISTANCE_METERS,
+        "number_of_items": 1,
+        "time": "2024-01-15T10:00:00Z"
+    })
+    # Negative cart value is not allowed
+    assert response.status_code == 400
+    assert response.json() == {"detail": "Cart value cannot be negative."}
