@@ -7,6 +7,15 @@ from models.delivery_fee_models import DeliveryFeeRequest
 def calculate_delivery_fee(request: DeliveryFeeRequest) -> int:
     """
     Calculates the delivery fee for a given request.
+
+    The fee is composed of:
+    - A small order surcharge if the cart value is below a base amount.
+    - A base delivery fee.
+    - An additional distance fee for distances exceeding the base delivery distance.
+    - An item count surcharge for orders with items above a certain threshold.
+    - A rush hour multiplier during specified times.
+    - Checks for free delivery when the cart value exceeds a certain threshold.
+    - Ensures the total fee does not exceed the maximum allowed fee.
     """
     fee = 0
 
