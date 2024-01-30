@@ -145,3 +145,17 @@ def test_zero_number_of_items():
     # Zero number of items is not allowed
     assert response.status_code == 400
     assert response.json() == {"detail": "Number of items must be greater than zero."}
+
+def test_non_utc_time():
+    """
+    Test case for orders with non-UTC time
+    """
+    response = client.post(DELIVERY_FEE_ENDPOINT, json={
+        "cart_value": BASE_CART_VALUE_CENTS,
+        "delivery_distance": BASE_DISTANCE_METERS,
+        "number_of_items": 1,
+        "time": "2024-01-15T10:00:00+01:00" # Non-UTC time
+    })
+    # Non-UTC time is not allowed
+    assert response.status_code == 400
+    assert response.json() == {"detail": "Order time must be in UTC."}
