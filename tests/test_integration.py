@@ -72,3 +72,20 @@ def test_item_count_above_threshold():
     expected_fee = BASE_DELIVERY_FEE_CENTS + (2 * ADDITIONAL_ITEM_COUNT_FEE_CENTS)
     assert response.status_code == 200
     assert response.json() == {"delivery_fee": expected_fee}
+
+def test_rush_hour_multiplier():
+    """
+    Test case for orders during rush hour
+    """
+    response = client.post(DELIVERY_FEE_ENDPOINT, json={
+        "cart_value": BASE_CART_VALUE_CENTS,
+        "delivery_distance": BASE_DISTANCE_METERS + 1,   # Just over base distance
+        "number_of_items": 1,
+        "time": "2024-01-19T16:00:00Z"  # Friday, 4 PM, a rush hour
+    })
+    # Base fee including additional distance fee
+    base_fee = BASE_DELIVERY_FEE_CENTS + ADDITIONAL_DISTANCE_FEE_CENTS
+    # Fee with rush hour multiplier, capped at maximum fee
+    expected_fee = int(min(base_fee * RUSH_HOUR_MULTIPLIER, MAX_FEE_CENTS))
+    assert response.status_code == 200
+    assert response.json() == {"delivery_fee": expected_fee}
