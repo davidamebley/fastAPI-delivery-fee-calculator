@@ -8,8 +8,8 @@ This is a backend HTTP API developed with Python and FastAPI. It calculates deli
 - pip (Python package installer)
 
 ### Installation
-1. Download this repository to your local machine.
-2. Navigate to the project directory in your terminal:
+1. Download this project or repository to your local machine.
+2. Navigate to the project directory in your terminal. Replace **`` `path/to/project-directory` ``** with the actual path of the project's directory on your machine:
    ```
    cd path/to/project-directory
    ```
