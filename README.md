@@ -1,5 +1,16 @@
-# Python Wolt Delivery Fee Calculator
-This is a backend HTTP API developed with Python and FastAPI. It calculates delivery fees based on cart value, delivery distance, number of items, and order time. It is designed to provide a quick and efficient way to determine delivery costs for customers when their shopping cart is ready.
+# FastAPI Delivery Fee Estimator
+This project is a backend HTTP API developed using Python and FastAPI framework. It efficiently calculates delivery fees by considering multiple factors such as cart value, delivery distance, number of items, and order time. Designed to optimize the checkout process, the API provides quick and accurate cost assessments to enhance user experience in e-commerce platforms.
+
+**Features:**
+- **Dynamic Fee Calculation:** Adjusts delivery costs in real-time based on user cart details and delivery parameters.
+- **Scalable Architecture:** Built to efficiently handle high volumes of requests with minimal latency.
+- **User-Centric Design:** Focuses on providing a seamless integration for e-commerce platforms looking to improve their customer checkout experience.
+
+**Technical Stack:**
+- **Python 3.8:** For robust back-end logic.
+- **FastAPI:** Chosen for its speed and ease of use in building APIs with automatic interactive documentation.
+- **Pytest:** Used for writing comprehensive tests ensuring the API's reliability and performance.
+
 ## Setup Instructions
 ### Prerequisites
 - Python 3.8 or higher
@@ -57,6 +68,6 @@ coverage run -m pytest
 coverage report
 ```
 ## Feedback and Suggestions
-Dear Reviewers,
+I welcome feedback and contributions to this project! If you have suggestions for improvements or have identified issues, please feel free to submit an issue or pull request directly on GitHub. For general feedback, you can use the discussions section of this repository.
 
-I understand that providing detailed feedback to everyone may not be feasible, but your insights are highly appreciated. If you find any issues or have any comments, please feel free to reach out to me or submit your suggestions via email at [davameb@gmail.com](mailto:davameb@gmail.com). Your input will be greatly appreciated and will help me improve my work. Thank you for your time and effort.
+Your contributions and insights are invaluable and greatly appreciated, as they help enhance the project's quality and functionality. Thank you for your interest and support!
