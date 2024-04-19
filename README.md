@@ -17,10 +17,12 @@ This project is a backend HTTP API developed using Python and FastAPI framework.
 - pip (Python package installer)
 ### Installation
 1. Download this project or repository to your local machine.
-2. Navigate to the project directory in your terminal. Replace **`` `path/to/project-directory` ``** with the actual path of the project's directory on your machine:
+2. Navigate to the project directory in your terminal:
    ```
    cd path/to/project-directory
    ```
+   Replace **`` `path/to/project-directory` ``** with the actual path of the project's directory on your machine.
+   
 3. Create and activate a virtual environment:
    - For Windows:
      ```
